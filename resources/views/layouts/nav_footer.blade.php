@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
     <!-- page css -->
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="/css/2020-09-28-practice/index.css">
+
+    @yield('css')
 
 
 </head>
@@ -20,7 +22,7 @@
 <body>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">台灣秘境</a>
+        <a class="navbar-brand" href="/">台灣秘境</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -29,13 +31,13 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">首頁</a>
+                    <a class="nav-link" href="/">首頁</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/news.html">最新消息</a>
+                    <a class="nav-link" href="/news">最新消息</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact_us.html">來信推薦</a>
+                    <a class="nav-link" href="/contact_us">來信推薦</a>
                 </li>
             </ul>
             <!-- <form class="form-inline my-2 my-lg-0">
@@ -45,10 +47,11 @@
         </div>
     </nav>
 
+
     <main role="main">
-        <!-- 內容放此 -->
-        <hr>
+        @yield('content')
     </main>
+
 
     <footer class="container">
         <p>&copy; 此頁面僅用於 全端班資料串接</p>
@@ -64,11 +67,14 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
 
-    <!-- swiper -->
+    <!-- swiper js -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
     <!-- page js -->
     <script src="./js/index.js"></script>
+
+    @yield('js')
+
+
 </body>
 
 </html>

@@ -1,0 +1,12 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User_0928 extends Model
+{
+    Protected $fillable = [
+        'title','sub_title','text','image_url'
+    ];
+}
