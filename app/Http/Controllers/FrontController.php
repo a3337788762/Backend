@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\contact;
+use App\movie_all;
+use App\movie_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,6 +46,30 @@ class FrontController extends Controller
         $news = DB::table('news')->where('id','=',$news_id)->first();
         // dd($news);
         return view('2020-09-28-practice/news_info',compact('news'));
+    }
+
+    public function movie_all(){
+        $movie_list = movie_all::all();
+        $movie_types = movie_type::all();
+        // dd($movie_types);
+        return view('admin/product/movie_all',compact('movie_list','movie_types'));
+    }
+
+    public function movie_info(){
+        return view('');
+    }
+
+    public function A($movie_type_id){
+        // dd($movie_type_id);
+
+        $movies = movie_type::find($movie_type_id);
+        $movie_types = movie_type::all();
+
+        // dd($movies);
+
+        $movie_list = movie_all::all();
+        return view('admin/product/movie_all',compact('movie_list','movie_types'));
+
     }
 
 }

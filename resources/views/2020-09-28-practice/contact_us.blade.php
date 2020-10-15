@@ -15,7 +15,7 @@
                         <li>注意事項</li>
                     </ol>
                 </div>
-                <form method="POST" action="/store_contact">
+                <form method="POST" action="/store_contact" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="exampleInputEmail1">您的信箱</label>

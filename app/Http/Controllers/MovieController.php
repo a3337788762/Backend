@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\contact;
-use App\User_0928;
+use App\movie_all;
+use App\movie_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 
-class NewsController extends Controller
+class MovieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news_list = User_0928::all();
-        return view('admin.news.index',compact('news_list'));
+        // 原本勿刪除
+        $movie_list = movie_all::all();
+        return view('admin.product.index',compact('movie_list'));
     }
 
     /**
@@ -28,7 +29,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('admin.news.create');
+        return view('admin.product.movie_create');
     }
 
     /**
@@ -39,36 +40,17 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-
-        //ORM 基本新增
-        // $new_news = new User_0928();
-        // $new_news->title = $request->title;
-        // $new_news->sub_title = $request->sub_title;
-        // $new_news->image_url = '';
-        // $new_news->text = $request->text;
-        // $new_news->save();
-
-        //file storage上傳方式 先使用php artisan storage:link建立捷徑在public
-        // $requestData = $request->all();
-        // $request->file('image_url');
-
-        //檔案上傳並取得圖片名稱,之後去index php 更改路徑
-        // $file_name = $request->file('image_url')->store('','public');
-        // $requestData['image_url'] = $file_name;
-
-        //move上傳方式
         $requestData = $request->all();
 
-        if($request->hasFile('image_url')){
-            $file = $request->file('image_url');
-            $path = $this->fileUpload($file,'news');
-            $requestData['image_url'] = $path;
+        if($request->hasFile('movie_poster')){
+            $file = $request->file('movie_poster');
+            $path = $this->fileUpload($file,'movie');
+            $requestData['movie_poster'] = $path;
         };
 
-        User_0928::create($requestData);
+        movie_all::create($requestData);
 
-        return redirect('/admin/news');
+        return redirect('/admin/movie');
     }
 
     /**
@@ -90,9 +72,10 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        $news = User_0928::where('id','=',$id)->first();
-        // dd($news);
-        return view('admin.news.edit',compact('news'));
+        $movie_grade = movie_type::all();
+        $movie = movie_all::where('id','=',$id)->first();
+        // dd($movie);
+        return view('admin.product.movie_edit',compact('movie','movie_grade'));
     }
 
     /**
@@ -104,24 +87,23 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //也可以用 $news = User_0928::where('id','=',$id)->first();
-        $news = User_0928::find($id);
-        $requestData = $request->all();
+                //也可以用 $news = User_0928::where('id','=',$id)->first();
+                $movie = movie_all::find($id);
+                $requestData = $request->all();
+                 //判斷是否有上傳圖片
+                    if($request->hasFile('movie_poster')){
+                       //刪除舊有照片
+                         $old_image = $movie->movie_poster;
+                         File::delete(public_path().$old_image);
+                       //上傳新圖片
+                       $file = $request->file('movie_poster');
+                       $path = $this->fileUpload($file,'movie');
+                       //將新圖片的路徑放入requestData中
+                       $requestData['movie_poster'] = $path;
+                    }
+                $movie->update($requestData);
 
-         //判斷是否有上傳圖片
-            if($request->hasFile('image_url')){
-               //刪除舊有照片
-                 $old_image = $news->image_url;
-                 File::delete(public_path().$old_image);
-               //上傳新圖片
-               $file = $request->file('image_url');
-               $path = $this->fileUpload($file,'news');
-               //將新圖片的路徑放入requestData中
-               $requestData['image_url'] = $path;
-            }
-        $news->update($requestData);
-
-        return redirect('/admin/news');
+                return redirect('/admin/movie');
     }
 
     /**
@@ -132,21 +114,15 @@ class NewsController extends Controller
      */
     public function destory($id)
     {
-        // $news = User_0928::find($id);
-        // $news->delete();
-
-        $news = User_0928::find($id);
-        $old_image = $news->image_url;
+        $movie = movie_all::find($id);
+        $old_image = $movie->movie_poster;
         if(file_exists(public_path().$old_image)){
             File::delete(public_path().$old_image);
         }
-        $news->delete();
+        $movie->delete();
 
-        return redirect('/admin/news');
-
-        // return redirect('/admin/news');
+        return redirect('/admin/movie');
     }
-
     private function fileUpload($file,$dir){
         //防呆：資料夾不存在時將會自動建立資料夾，避免錯誤
         if( ! is_dir('upload/')){

@@ -25,11 +25,20 @@ Route::get('/news', 'FrontController@news');
 
 Route::get('/news_info/{news_id}', 'FrontController@news_info');
 
+Route::get('/movie_all', 'FrontController@movie_all');
+
+Route::get('/movie_info/{movie_id}', 'FrontController@movie_info');
+
+Route::get('/movie_all/{movie_type_id}', 'FrontController@A');
+
+
+
+
 // Auth::routes();
 
 Auth::routes(['register' => false, 'reset' => false,]);
 
-Route::get('/admin', 'HomeController@index')->name('admin');
+Route::get('/admin', 'HomeController@index')->name('home');
 
 Route::prefix('admin')->middleware(['auth'])->group(function(){
 
@@ -38,6 +47,28 @@ Route::prefix('admin')->middleware(['auth'])->group(function(){
     Route::post('news/store','NewsController@store');
     Route::get('news/edit/{news_id}','NewsController@edit');
     Route::post('news/update/{news_id}','NewsController@update');
-    Route::get('news/destroy/{news_id}','NewsController@destory');
+    Route::get('news/destory/{news_id}','NewsController@destory');
+
+});
+
+Route::prefix('admin')->middleware(['auth'])->group(function(){
+
+    Route::get('movie','MovieController@index');
+    Route::get('movie/create','MovieController@create');
+    Route::post('movie/store','MovieController@store');
+    Route::get('movie/edit/{movie_id}','MovieController@edit');
+    Route::post('movie/update/{movie_id}','MovieController@update');
+    Route::get('movie/destory/{movie_id}','MovieController@destory');
+
+});
+
+Route::prefix('admin')->middleware(['auth'])->group(function(){
+
+    Route::get('movie_type','Movietype@index');
+    Route::get('movie_type/create','Movietype@create');
+    Route::post('movie_type/store','Movietype@store');
+    Route::get('movie_type/edit/{movie_id}','Movietype@edit');
+    Route::post('movie_type/update/{movie_id}','Movietype@update');
+    Route::get('movie_type/destory/{movie_id}','Movietype@destory');
 
 });
